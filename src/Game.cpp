@@ -123,7 +123,7 @@ void Game::spawnEnemy() {
 	const sf::Vector2f &mid = player.getPosition();
 	std::uniform_real_distribution<float> dist(1, 1e10);
 	std::uniform_real_distribution<float> distance(600, 1100);
-	std::uniform_int_distribution<char> negative(0, 1);
+	std::uniform_int_distribution<short> negative(0, 1);
 
 	sf::Vector2f pos = {dist(randomGen), dist(randomGen)};
 	if (negative(randomGen)) pos.x *= -1;
