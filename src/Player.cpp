@@ -72,6 +72,7 @@ bool Player::dead() const {
 }
 
 bool Player::takeDamage(LivingEntityTakeDamageParams &params) {
+	if (this->dead()) return true;
 	health -= params.damage;
 
 	// spawn blood particle
@@ -85,8 +86,11 @@ bool Player::takeDamage(LivingEntityTakeDamageParams &params) {
 		params.animations.emplace_back(std::make_unique<Animation::Particle>(pos, velocity, acceleration));
 	}
 
-
-	return health <= 0;
+	if (this->dead()) {
+		this->shape.setFillColor(sf::Color::Blue);
+		return true;
+	}
+	return false;
 }
 
 bool Player::update(EntityUpdateParams &params) {
