@@ -7,9 +7,10 @@
 Game::Game() :
 		window(sf::VideoMode(800, 600), "idk", sf::Style::Close),
 		tillSpawnEnemy(5000),
-		status(STARTED),
+		status(Status::STARTED),
 		deadMessage(font),
-		pausedMessage(font) {
+		pausedMessage(font),
+		keyPressed(sf::Keyboard::KeyCount, false) {
 	font.loadFromFile("font.ttf");
 	sf::Image icon;
 	if (icon.loadFromFile("icon.png"))
@@ -26,9 +27,9 @@ bool Game::isActive() const {
 void Game::update() {
 	const sf::Int32 dt = clock.restart().asMilliseconds();
 	this->handleWindowEvents();
-	EntityUpdateParams params{dt, player, enemies, animations, animationsUnderPlayer, randomGen};
+	EntityUpdateParams params{dt, player, enemies, animations, animationsUnderPlayer, randomGen, keyPressed};
 	healthDisplay.update(player);
-	if (status == PAUSED) return;
+	if (status == Status::PAUSED) return;
 	while (animations.size() > 1000)
 		animations.erase(animations.begin(), animations.begin() + (long) (animations.size() - 1000));
 	while (animationsUnderPlayer.size() > 1000)
@@ -41,7 +42,7 @@ void Game::update() {
 		if ((*it)->update(dt)) animationsUnderPlayer.erase(it);
 		else it++;
 	}
-	if (status == DEAD) return;
+	if (status == Status::DEAD) return;
 	for (auto it = enemies.begin(); it != enemies.end();) {
 		if ((*it)->update(params)) enemies.erase(it);
 		else it++;
@@ -52,7 +53,7 @@ void Game::update() {
 		tillSpawnEnemy = 5000;
 	}
 
-	if (this->player.update(params)) status = DEAD;
+	if (this->player.update(params)) status = Status::DEAD;
 }
 
 void Game::render() {
@@ -68,9 +69,9 @@ void Game::render() {
 	for (auto &animation: animations)
 		animation->render(this->window);
 	this->healthDisplay.render(window);
-	if (status == DEAD)
+	if (status == Status::DEAD)
 		deadMessage.render(window);
-	else if (status == PAUSED)
+	else if (status == Status::PAUSED)
 		pausedMessage.render(window);
 	this->window.display();
 }
@@ -83,10 +84,11 @@ void Game::handleWindowEvents() {
 			return;
 		}
 		if (event.type == sf::Event::LostFocus) {
-			if (status == STARTED) status = PAUSED;
+			if (status == Status::STARTED) status = Status::PAUSED;
 			continue;
 		}
 		if (event.type == sf::Event::KeyPressed) {
+			keyPressed[event.key.code] = true;
 			using sf::Keyboard;
 			switch (event.key.code) {
 				case Keyboard::Q:
@@ -100,10 +102,10 @@ void Game::handleWindowEvents() {
 					this->restart();
 					break;
 				case Keyboard::Escape:
-					if (status == STARTED)
-						status = PAUSED;
-					else if (status == PAUSED)
-						status = STARTED;
+					if (status == Status::STARTED)
+						status = Status::PAUSED;
+					else if (status == Status::PAUSED)
+						status = Status::STARTED;
 					break;
 				case Keyboard::Enter:
 					this->spawnEnemy();
@@ -115,6 +117,9 @@ void Game::handleWindowEvents() {
 				default:;
 			}
 			continue;
+		}
+		if (event.type == sf::Event::KeyReleased) {
+			keyPressed[event.key.code] = false;
 		}
 	}
 }
@@ -137,7 +142,7 @@ void Game::spawnEnemy() {
 void Game::restart() {
 	player = Player();
 	tillSpawnEnemy = 5000;
-	status = STARTED;
+	status = Status::STARTED;
 	enemies.clear();
 	animations.clear();
 	animationsUnderPlayer.clear();

@@ -96,14 +96,14 @@ bool Player::update(EntityUpdateParams &params) {
 	sf::Vector2f move{0, 0};
 	{
 		using sf::Keyboard;
-		move.y = -(float) (Keyboard::isKeyPressed(Keyboard::W) + Keyboard::isKeyPressed(Keyboard::Up));
-		move.x = -(float) (Keyboard::isKeyPressed(Keyboard::A) + Keyboard::isKeyPressed(Keyboard::Left));
-		move.y += (float) (Keyboard::isKeyPressed(Keyboard::S) + Keyboard::isKeyPressed(Keyboard::Down));
-		move.x += (float) (Keyboard::isKeyPressed(Keyboard::D) + Keyboard::isKeyPressed(Keyboard::Right));
+		move.y = -static_cast<float>(params.keyPressed[Keyboard::W]) - static_cast<float>(params.keyPressed[Keyboard::Up]);
+		move.x = -static_cast<float>(params.keyPressed[Keyboard::A]) - static_cast<float>(params.keyPressed[Keyboard::Left]);
+		move.y += static_cast<float>(params.keyPressed[Keyboard::S]) + static_cast<float>(params.keyPressed[Keyboard::Down]);
+		move.x += static_cast<float>(params.keyPressed[Keyboard::D]) + static_cast<float>(params.keyPressed[Keyboard::Right]);
 	}
 	if (move != sf::Vector2f{0, 0}) {
 		move /= std::sqrt(move.x * move.x + move.y * move.y);
-		move *= (float) params.dt / 2;
+		move *= static_cast<float>(params.dt) / 2;
 		spawnTrails(params.animationsUnderPlayer);
 	}
 	shape.move(move);

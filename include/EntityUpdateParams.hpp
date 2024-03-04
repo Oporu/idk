@@ -23,6 +23,7 @@ struct EntityUpdateParams {
 	std::vector<std::unique_ptr<Animation::Animation>> &animations;
 	std::vector<std::unique_ptr<Animation::Animation>> &animationsUnderPlayer;
 	std::mt19937 &randomGen;
+	const std::vector<bool>& keyPressed;
 };
 
 #endif //IDK_ENTITYUPDATEPARAMS_HPP

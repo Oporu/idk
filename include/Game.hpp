@@ -17,7 +17,7 @@ class DeadMessage;
 
 class Game final {
 public:
-	enum Status {
+	enum class Status {
 		STARTED, DEAD, PAUSED
 	};
 
@@ -46,6 +46,7 @@ private:
 	Status status;
 	DeadMessage deadMessage;
 	PausedMessage pausedMessage;
+	std::vector<bool> keyPressed;
 
 	void handleWindowEvents();
 
