@@ -9,8 +9,7 @@ Game::Game() :
 		tillSpawnEnemy(5000),
 		status(Status::STARTED),
 		deadMessage(font),
-		pausedMessage(font),
-		keyPressed(sf::Keyboard::KeyCount, false) {
+		pausedMessage(font) {
 	font.loadFromFile("font.ttf");
 	sf::Image icon;
 	if (icon.loadFromFile("icon.png"))
@@ -18,6 +17,7 @@ Game::Game() :
 	this->window.setFramerateLimit(60);
 	this->window.setVerticalSyncEnabled(true);
 	this->window.setActive(true);
+	this->window.setKeyRepeatEnabled(false);
 }
 
 bool Game::isActive() const {
