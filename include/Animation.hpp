@@ -8,13 +8,10 @@
 #include <SFML/Graphics.hpp>
 
 namespace Animation {
-	class Animation {
+	class Animation : public sf::Drawable {
 	public:
-		virtual ~Animation() = default;
-
 		virtual bool update(sf::Int32 dt) = 0;
 
-		virtual void render(sf::RenderWindow &window) = 0;
 	};
 }
 

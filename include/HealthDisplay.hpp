@@ -9,19 +9,19 @@
 
 class Player;
 
-class HealthDisplay final {
+class HealthDisplay final : public sf::Drawable {
 public:
 	HealthDisplay();
 
 	void update(const Player &player);
 
-	void render(sf::RenderWindow &window);
+	void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
 private:
 	static const inline sf::Vector2f SIZE{400, 30};
-	sf::RectangleShape empty;
-	sf::RectangleShape filled;
-	sf::RectangleShape previousFilled;
+	mutable sf::RectangleShape empty;
+	mutable sf::RectangleShape filled;
+	mutable sf::RectangleShape previousFilled;
 	float previousPercentage;
 };
 

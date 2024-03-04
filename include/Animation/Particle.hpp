@@ -19,7 +19,7 @@ namespace Animation {
 
 		bool update(sf::Int32 dt) override;
 
-		void render(sf::RenderWindow &window) override;
+		void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 	};
 
 

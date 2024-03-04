@@ -27,7 +27,7 @@ public:
 
 	bool update(EntityUpdateParams &params) override;
 
-	void render(sf::RenderWindow &window) override;
+	void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
 	void explode(EntityUpdateParams &params);
 

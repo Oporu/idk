@@ -7,14 +7,14 @@
 
 #include <SFML/Graphics.hpp>
 
-class PausedMessage final {
-	sf::Text text;
-	sf::RectangleShape background;
+class PausedMessage final : public sf::Drawable {
+	mutable sf::Text text;
+	mutable sf::RectangleShape background;
 
 public:
 	explicit PausedMessage(const sf::Font &font);
 
-	void render(sf::RenderWindow &window);
+	void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 };
 
 #endif //IDK_PAUSEDMESSAGE_HPP

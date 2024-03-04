@@ -11,14 +11,18 @@
 class Enemy final : public LivingEntity {
 	class DeathAnimation final : public Animation::Animation {
 	public:
-		void render(sf::RenderWindow &window) override;
 		bool update(sf::Int32 dt) override;
-		DeathAnimation(sf::RectangleShape shape, const sf::Vector2f& velocity, int life=2000);
+
+		void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
+
+		DeathAnimation(sf::RectangleShape shape, const sf::Vector2f &velocity, int life = 2000);
+
 	private:
 		sf::RectangleShape shape;
 		sf::Vector2f velocity;
 		int life;
 	};
+
 	inline static const sf::Vector2f SIZE{50, 50};
 	inline static const float speed = 1.f / 4;
 	sf::RectangleShape shape{SIZE};
@@ -30,7 +34,7 @@ public:
 
 	bool takeDamage(LivingEntityTakeDamageParams &params) override;
 
-	void render(sf::RenderWindow &window) override;
+	void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
 	sf::FloatRect getGlobalBounds() const override;
 

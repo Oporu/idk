@@ -24,14 +24,14 @@ void HealthDisplay::update(const Player &player) {
 	previousPercentage = c;
 }
 
-void HealthDisplay::render(sf::RenderWindow &window) {
-	const sf::View &windowView = window.getView();
+void HealthDisplay::draw(sf::RenderTarget &target, sf::RenderStates states) const {
+	const sf::View &windowView = target.getView();
 	const sf::Vector2f pos = windowView.getCenter() - (windowView.getSize() / 2.f);
 	empty.setPosition(pos);
 	filled.setPosition(pos);
 	previousFilled.setPosition(pos);
 
-	window.draw(empty);
-	window.draw(previousFilled);
-	window.draw(filled);
+	target.draw(empty, states);
+	target.draw(previousFilled, states);
+	target.draw(filled, states);
 }

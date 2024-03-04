@@ -28,7 +28,7 @@ namespace Animation {
 		return false;
 	}
 
-	void FadingOutParticle::render(sf::RenderWindow &window) {
-		window.draw(this->shape);
+	void FadingOutParticle::draw(sf::RenderTarget &target, sf::RenderStates states) const {
+		target.draw(this->shape, states);
 	}
 }

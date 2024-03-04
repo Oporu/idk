@@ -25,7 +25,7 @@ namespace Animation {
 		return false;
 	}
 
-	void Particle::render(sf::RenderWindow &window) {
-		window.draw(this->shape);
+	void Particle::draw(sf::RenderTarget &target, sf::RenderStates states) const {
+		target.draw(this->shape, states);
 	}
 }

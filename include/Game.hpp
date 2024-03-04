@@ -47,7 +47,7 @@ private:
 	Status status;
 	DeadMessage deadMessage;
 	PausedMessage pausedMessage;
-	std::array<bool, sf::Keyboard::KeyCount> keyPressed {false};
+	std::array<bool, sf::Keyboard::KeyCount> keyPressed{false};
 
 	void handleWindowEvents();
 

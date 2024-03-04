@@ -16,3 +16,10 @@ void DeadMessage::render(sf::RenderWindow &window) {
 	text.setPosition(window.getView().getCenter());
 	window.draw(text);
 }
+
+void DeadMessage::draw(sf::RenderTarget &target, sf::RenderStates states) const {
+	const sf::FloatRect bounds = text.getLocalBounds();
+	this->text.setOrigin(bounds.width / 2, bounds.height / 2);
+	this->text.setPosition(target.getView().getCenter());
+	target.draw(text, states);
+}

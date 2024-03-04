@@ -12,10 +12,6 @@ Enemy::Enemy(const sf::Vector2f &position) {
 	this->shape.setPosition(position);
 }
 
-void Enemy::render(sf::RenderWindow &window) {
-	window.draw(this->shape);
-}
-
 sf::FloatRect Enemy::getGlobalBounds() const {
 	return this->shape.getGlobalBounds();
 }
@@ -56,18 +52,23 @@ bool Enemy::update(EntityUpdateParams &params) {
 	return health <= 0;
 }
 
+void Enemy::draw(sf::RenderTarget &target, sf::RenderStates states) const {
+	target.draw(this->shape, states);
+}
+
 bool Enemy::DeathAnimation::update(sf::Int32 dt) {
 	life -= dt;
 	if (life <= 0) return true;
-	shape.move(velocity * (float)dt);
-	shape.setRotation((float)life);
+	shape.move(velocity * (float) dt);
+	shape.setRotation((float) life);
 	return false;
 }
 
-void Enemy::DeathAnimation::render(sf::RenderWindow &window) {
-	window.draw(shape);
+Enemy::DeathAnimation::DeathAnimation(sf::RectangleShape shape, const sf::Vector2f &velocity, int life) : shape(
+		std::move(shape)), velocity(velocity), life(life) {
+
 }
 
-Enemy::DeathAnimation::DeathAnimation(sf::RectangleShape shape, const sf::Vector2f& velocity, int life) : shape(std::move(shape)), velocity(velocity), life(life) {
-
+void Enemy::DeathAnimation::draw(sf::RenderTarget &target, sf::RenderStates states) const {
+	target.draw(this->shape, states);
 }

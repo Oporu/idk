@@ -34,8 +34,11 @@ void Game::update() {
 		animations.erase(animations.begin(), animations.begin() + (long) (animations.size() - 3000));
 	while (animationsUnderPlayer.size() > 3000)
 		animationsUnderPlayer.erase(animationsUnderPlayer.begin() + (long) (animationsUnderPlayer.size() - 3000));
-	animations.erase(std::remove_if(animations.begin(), animations.end(), [&](const auto& a){ return a->update(dt); }), animations.end());
-	animationsUnderPlayer.erase(std::remove_if(animationsUnderPlayer.begin(), animationsUnderPlayer.end(), [&](const auto& a){ return a->update(dt); }), animationsUnderPlayer.end());
+	animations.erase(std::remove_if(animations.begin(), animations.end(), [&](const auto &a) { return a->update(dt); }),
+	                 animations.end());
+	animationsUnderPlayer.erase(std::remove_if(animationsUnderPlayer.begin(), animationsUnderPlayer.end(),
+	                                           [&](const auto &a) { return a->update(dt); }),
+	                            animationsUnderPlayer.end());
 	if (status == Status::DEAD) return;
 	for (auto it = enemies.begin(); it != enemies.end();) {
 		if ((*it)->update(params)) enemies.erase(it);
@@ -56,17 +59,17 @@ void Game::render() {
 	window.setView(sf::View{player.getPosition(), static_cast<sf::Vector2f>(window.getSize())});
 
 	for (auto &enemy: enemies)
-		enemy->render(window);
+		window.draw(*enemy);
 	for (auto &animation: animationsUnderPlayer)
-		animation->render(this->window);
-	this->player.render(window);
+		window.draw(*animation);
+	window.draw(player);
 	for (auto &animation: animations)
-		animation->render(this->window);
-	this->healthDisplay.render(window);
+		window.draw(*animation);
+	window.draw(healthDisplay);
 	if (status == Status::DEAD)
-		deadMessage.render(window);
+		window.draw(deadMessage);
 	else if (status == Status::PAUSED)
-		pausedMessage.render(window);
+		window.draw(pausedMessage);
 	this->window.display();
 }
 

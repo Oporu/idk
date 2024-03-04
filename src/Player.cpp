@@ -14,10 +14,6 @@ Player::Player() : maxHealth(10000), health(10000), coolDownToExplode(0), kills(
 	shape.setOrigin(SIZE / 2.f);
 }
 
-void Player::render(sf::RenderWindow &window) {
-	window.draw(this->shape);
-}
-
 void Player::explode(EntityUpdateParams &params) {
 	if (coolDownToExplode > 0) return;
 	coolDownToExplode = 1000;
@@ -100,10 +96,14 @@ bool Player::update(EntityUpdateParams &params) {
 	sf::Vector2f move{0, 0};
 	{
 		using sf::Keyboard;
-		move.y = -static_cast<float>(params.keyPressed[Keyboard::W]) - static_cast<float>(params.keyPressed[Keyboard::Up]);
-		move.x = -static_cast<float>(params.keyPressed[Keyboard::A]) - static_cast<float>(params.keyPressed[Keyboard::Left]);
-		move.y += static_cast<float>(params.keyPressed[Keyboard::S]) + static_cast<float>(params.keyPressed[Keyboard::Down]);
-		move.x += static_cast<float>(params.keyPressed[Keyboard::D]) + static_cast<float>(params.keyPressed[Keyboard::Right]);
+		move.y = -static_cast<float>(params.keyPressed[Keyboard::W]) -
+		         static_cast<float>(params.keyPressed[Keyboard::Up]);
+		move.x = -static_cast<float>(params.keyPressed[Keyboard::A]) -
+		         static_cast<float>(params.keyPressed[Keyboard::Left]);
+		move.y += static_cast<float>(params.keyPressed[Keyboard::S]) +
+		          static_cast<float>(params.keyPressed[Keyboard::Down]);
+		move.x += static_cast<float>(params.keyPressed[Keyboard::D]) +
+		          static_cast<float>(params.keyPressed[Keyboard::Right]);
 	}
 	if (move != sf::Vector2f{0, 0}) {
 		move /= std::sqrt(move.x * move.x + move.y * move.y);
@@ -124,4 +124,8 @@ sf::Int32 Player::getMaxHealth() const {
 
 sf::Int32 Player::getHealth() const {
 	return health;
+}
+
+void Player::draw(sf::RenderTarget &target, sf::RenderStates states) const {
+	target.draw(this->shape, states);
 }

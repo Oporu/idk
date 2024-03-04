@@ -23,7 +23,7 @@ namespace Animation {
 		return false;
 	}
 
-	void Explosion::render(sf::RenderWindow &window) {
-		window.draw(this->shape);
+	void Explosion::draw(sf::RenderTarget &target, sf::RenderStates states) const {
+		target.draw(this->shape, states);
 	}
 }

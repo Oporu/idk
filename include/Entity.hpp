@@ -9,11 +9,9 @@
 
 struct EntityUpdateParams;
 
-class Entity {
+class Entity : public sf::Drawable {
 public:
 	virtual bool update(EntityUpdateParams &params) = 0;
-
-	virtual void render(sf::RenderWindow &window) = 0;
 
 	[[nodiscard]] virtual sf::FloatRect getGlobalBounds() const = 0;
 
