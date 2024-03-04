@@ -92,7 +92,7 @@ bool Player::takeDamage(LivingEntityTakeDamageParams &params) {
 bool Player::update(EntityUpdateParams &params) {
 	coolDownToExplode -= params.dt;
 	coolDownToExplode = std::max(coolDownToExplode, 0);
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) this->explode(params);
+	if (params.keyPressed[sf::Keyboard::Space]) this->explode(params);
 	sf::Vector2f move{0, 0};
 	{
 		using sf::Keyboard;
