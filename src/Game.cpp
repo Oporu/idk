@@ -30,18 +30,12 @@ void Game::update() {
 	EntityUpdateParams params{dt, player, enemies, animations, animationsUnderPlayer, randomGen, keyPressed};
 	healthDisplay.update(player);
 	if (status == Status::PAUSED) return;
-	while (animations.size() > 1000)
-		animations.erase(animations.begin(), animations.begin() + (long) (animations.size() - 1000));
-	while (animationsUnderPlayer.size() > 1000)
-		animationsUnderPlayer.erase(animationsUnderPlayer.begin() + (long) (animationsUnderPlayer.size() - 1000));
-	for (auto it = animations.begin(); it != animations.end();) {
-		if ((*it)->update(dt)) animations.erase(it);
-		else it++;
-	}
-	for (auto it = animationsUnderPlayer.begin(); it != animationsUnderPlayer.end();) {
-		if ((*it)->update(dt)) animationsUnderPlayer.erase(it);
-		else it++;
-	}
+	if (animations.size() > 3000)
+		animations.erase(animations.begin(), animations.begin() + (long) (animations.size() - 3000));
+	while (animationsUnderPlayer.size() > 3000)
+		animationsUnderPlayer.erase(animationsUnderPlayer.begin() + (long) (animationsUnderPlayer.size() - 3000));
+	animations.erase(std::remove_if(animations.begin(), animations.end(), [&](const auto& a){ return a->update(dt); }), animations.end());
+	animationsUnderPlayer.erase(std::remove_if(animationsUnderPlayer.begin(), animationsUnderPlayer.end(), [&](const auto& a){ return a->update(dt); }), animationsUnderPlayer.end());
 	if (status == Status::DEAD) return;
 	for (auto it = enemies.begin(); it != enemies.end();) {
 		if ((*it)->update(params)) enemies.erase(it);

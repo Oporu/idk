@@ -73,7 +73,7 @@ bool Player::dead() const {
 
 bool Player::takeDamage(LivingEntityTakeDamageParams &params) {
 	if (this->dead()) return true;
-	health -= params.damage;
+//	health -= params.damage;
 
 	// spawn blood particle
 	{
