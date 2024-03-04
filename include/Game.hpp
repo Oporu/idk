@@ -8,6 +8,7 @@
 #include "DeadMessage.hpp"
 #include "PausedMessage.hpp"
 #include <iostream>
+#include <array>
 
 class Enemy;
 

@@ -6,6 +6,7 @@
 #define IDK_ENTITYUPDATEPARAMS_HPP
 
 #include <SFML/Graphics.hpp>
+#include <array>
 #include "Player.hpp"
 #include "Enemy.hpp"
 #include "Animation.hpp"

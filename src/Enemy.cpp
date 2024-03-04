@@ -60,7 +60,7 @@ bool Enemy::DeathAnimation::update(sf::Int32 dt) {
 	life -= dt;
 	if (life <= 0) return true;
 	shape.move(velocity * (float)dt);
-	shape.setRotation((float)(life%360));
+	shape.setRotation((float)life);
 	return false;
 }
 
