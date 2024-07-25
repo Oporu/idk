@@ -3,8 +3,8 @@ project(idk LANGUAGES CXX)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
-
 include(FetchContent)
+# include SFML
 set(SFML_STATIC_LIBRARIES FALSE)
 if(UNIX)
 	find_package(SFML 2.6 COMPONENTS graphics window system audio QUIET)
@@ -25,19 +25,9 @@ else()
 	FetchContent_MakeAvailable(SFML)
 	message("done, SFML source directory = ${SFML_SOURCE_DIR}")
 endif()
-
+# /include SFML
 file(GLOB_RECURSE source_files CONFIGURE_DEPENDS "src/*.cpp")
 add_executable(${PROJECT_NAME} ${source_files})
-# add_executable(${PROJECT_NAME} src/main.cpp
-        # src/Game.cpp
-        # src/Enemy.cpp
-        # src/Player.cpp
-        # src/Animation/Explosion.cpp
-        # src/Animation/FadingOutParticle.cpp
-        # src/Animation/Particle.cpp
-        # src/HealthDisplay.cpp
-        # src/DeadMessage.cpp
-        # src/PausedMessage.cpp)
 target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics sfml-window sfml-system sfml-audio)
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
 
