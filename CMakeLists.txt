@@ -5,22 +5,40 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
 
 include(FetchContent)
-FetchContent_Declare(SFML
-        GIT_REPOSITORY https://github.com/SFML/SFML.git
-        GIT_TAG 2.6.x)
-FetchContent_MakeAvailable(SFML)
+set(SFML_STATIC_LIBRARIES FALSE)
+if(UNIX)
+	find_package(SFML 2.6 COMPONENTS graphics window system audio QUIET)
+endif()
 
-add_executable(${PROJECT_NAME} src/main.cpp
-        src/Game.cpp
-        src/Enemy.cpp
-        src/Player.cpp
-        src/Animation/Explosion.cpp
-        src/Animation/FadingOutParticle.cpp
-        src/Animation/Particle.cpp
-        src/HealthDisplay.cpp
-        src/DeadMessage.cpp
-        src/PausedMessage.cpp)
-target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics)
+if (SFML_FOUND)
+elseif(UNIX)
+	set(SFML_STATIC_LIBRARIES TRUE)
+	find_package(SFML 2.6 COMPONENTS graphics window system audio QUIET)
+endif()
+if(SFML_FOUND)
+	message("using sfml ${SFML_VERSION} from local")
+else()
+	message("getting sfml from github if not downloaded...")
+	FetchContent_Declare(SFML
+			GIT_REPOSITORY https://github.com/SFML/SFML.git
+			GIT_TAG 2.6.x)
+	FetchContent_MakeAvailable(SFML)
+	message("done, SFML source directory = ${SFML_SOURCE_DIR}")
+endif()
+
+file(GLOB_RECURSE source_files CONFIGURE_DEPENDS "src/*.cpp")
+add_executable(${PROJECT_NAME} ${source_files})
+# add_executable(${PROJECT_NAME} src/main.cpp
+        # src/Game.cpp
+        # src/Enemy.cpp
+        # src/Player.cpp
+        # src/Animation/Explosion.cpp
+        # src/Animation/FadingOutParticle.cpp
+        # src/Animation/Particle.cpp
+        # src/HealthDisplay.cpp
+        # src/DeadMessage.cpp
+        # src/PausedMessage.cpp)
+target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics sfml-window sfml-system sfml-audio)
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
 
 if (WIN32)
